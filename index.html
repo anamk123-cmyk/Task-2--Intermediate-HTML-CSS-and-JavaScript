@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enhanced Form & To-Do List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #fcefee, #f7f0ff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #4b0082;
+      margin-bottom: 30px;
+      font-size: 2.6rem;
+      letter-spacing: -0.5px;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .form-container, .todo-list {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+      transition: 0.3s;
+    }
+
+    .form-container:hover, .todo-list:hover {
+      transform: translateY(-3px);
+    }
+
+    h2 {
+      color: #3b3b5c;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: 600;
+      color: #5b5b7c;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #d9d9ec;
+      background-color: #fafaff;
+      transition: 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #b388eb;
+      box-shadow: 0 0 0 3px #e6ddff;
+    }
+
+    input[type="submit"],
+    #addTaskButton {
+      background: linear-gradient(to right, #4b0082, #ff6f61);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: background 0.4s ease;
+    }
+
+    input[type="submit"]:hover,
+    #addTaskButton:hover {
+      background: linear-gradient(to right, #6a0dad, #ff4c4c);
+    }
+
+    .error-message {
+      color: #d32f2f;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .success-message {
+      color: #2e7d32;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .todo-list ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .todo-list li {
+      background: #f6f6ff;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      color: #333355;
+      font-weight: 500;
+    }
+
+    .todo-list li.completed {
+      text-decoration: line-through;
+      background-color: #d0f0d0;
+      color: #2e7d32;
+    }
+
+    .deleteButton {
+      background-color: #ff6f61;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .deleteButton:hover {
+      background-color: #e85045;
+    }
+
+    #taskInput,
+    #prioritySelect {
+      margin-top: 10px;
+    }
+
+    .priority-badge {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      margin-left: 10px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .high {
+      background-color: #ff4c4c;
+    }
+
+    .medium {
+      background-color: #ffc107;
+      color: #000;
+    }
+
+    .low {
+      background-color: #4caf50;
+    }
+
+    .task-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Enhanced Form & To-Do List</h1>
+
+  <div class="main-container">
+    <!-- Form -->
+    <div class="form-container">
+      <h2>Contact Form</h2>
+      <form id="contactForm">
+        <div id="error-message" class="error-message"></div>
+        <div id="success-message" class="success-message"></div>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required />
+
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+
+    <!-- To-Do List -->
+    <div class="content">
+      <div class="todo-list">
+        <h2>To-Do List</h2>
+        <ul id="taskList"></ul>
+
+        <input type="text" id="taskInput" placeholder="Add a new task..." />
+        <select id="prioritySelect">
+          <option value="low">Low Priority</option>
+          <option value="medium">Medium Priority</option>
+          <option value="high">High Priority</option>
+        </select>
+        <button id="addTaskButton">Add Task</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Form Handling
+    const form = document.getElementById('contactForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success-message');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      errorMessage.textContent = '';
+      successMessage.textContent = '';
+
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      const phoneRegex = /^\d{10}$/;
+
+      if (!nameInput.value.trim() || !emailInput.value.trim() || !phoneInput.value.trim()) {
+        errorMessage.textContent = 'All fields are required!';
+        return;
+      }
+
+      if (!emailRegex.test(emailInput.value)) {
+        errorMessage.textContent = 'Please enter a valid email address.';
+        return;
+      }
+
+      if (!phoneRegex.test(phoneInput.value)) {
+        errorMessage.textContent = 'Phone number must be 10 digits.';
+        return;
+      }
+
+      successMessage.textContent = 'Form submitted successfully!';
+      form.reset();
+    });
+
+    // To-Do List Handling
+    const taskInput = document.getElementById('taskInput');
+    const prioritySelect = document.getElementById('prioritySelect');
+    const taskList = document.getElementById('taskList');
+    const addTaskButton = document.getElementById('addTaskButton');
+
+    addTaskButton.addEventListener('click', () => {
+      const taskText = taskInput.value.trim();
+      const priority = prioritySelect.value;
+
+      if (taskText === '') {
+        alert('Please enter a task!');
+        return;
+      }
+
+      const task = document.createElement('li');
+      const priorityBadge = `<span class="priority-badge ${priority}">${priority.toUpperCase()}</span>`;
+
+      task.innerHTML = `
+        ${taskText} ${priorityBadge}
+        <div class="task-controls">
+          <button class="completeButton">✔</button>
+          <button class="deleteButton">Delete</button>
+        </div>
+      `;
+
+      // Complete button logic
+      task.querySelector('.completeButton').addEventListener('click', () => {
+        task.classList.toggle('completed');
+      });
+
+      // Delete button logic
+      task.querySelector('.deleteButton').addEventListener('click', () => {
+        task.remove();
+      });
+
+      taskList.appendChild(task);
+      taskInput.value = '';
+    });
+  </script>
+
+</body>
+</html>
